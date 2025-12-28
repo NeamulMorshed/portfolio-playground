@@ -81,9 +81,9 @@ async function loadComponents() {
   try {
     console.log('Starting component loading...');
     
-    // Load navbar
+    // Load navbar - use absolute path for deployment compatibility
     console.log('Fetching navbar...');
-    const navbarResponse = await fetch('components/navbar.html');
+    const navbarResponse = await fetch('/components/navbar.html');
     if (!navbarResponse.ok) {
       throw new Error(`Failed to load navbar: ${navbarResponse.status} ${navbarResponse.statusText}`);
     }
