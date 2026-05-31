@@ -338,69 +338,30 @@ function initButtonAnimations() {
   });
 }
 
-// Initialize parallax scroll effect for case studies
+// Scroll-triggered reveal for each case study card
 function initCaseCardScrollAnimations() {
   if (!window.gsap || !window.ScrollTrigger) return;
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) return;
 
   gsap.registerPlugin(ScrollTrigger);
 
   const cards = document.querySelectorAll('.case-row.case-single');
   if (!cards.length) return;
 
-  // Make cards stack on top of each other for the animation
-  const wrapper = document.querySelector('#case-studies-wrapper');
-  if (wrapper) {
-    wrapper.style.position = 'relative';
-    wrapper.style.height = '100vh';
-  }
-
-  // Position all cards absolutely in the same spot
   cards.forEach((card) => {
-    card.style.position = 'absolute';
-    card.style.top = '50%';
-    card.style.left = '50%';
-    card.style.transform = 'translate(-50%, -50%)';
-  });
-
-  // Set initial state with perspective
-  gsap.set(cards, { transformPerspective: 1000 });
-
-  let tl = gsap.timeline({
-    ease: "none",
-    scrollTrigger: {
-      trigger: "#case-studies-wrapper",
-      pin: true,
-      scrub: 1,
-      anticipatePin: 1,
-      start: "top top",
-      end: "+=4000",
-      markers: false
-    }
-  });
-
-  cards.forEach((card, i) => {
-    // Animate in
-    tl.from(card, {
-      y: 200,
-      duration: 1,
+    gsap.from(card, {
+      y: 60,
       opacity: 0,
-      rotationX: -45,
-      ease: "power2.out"
+      duration: 1,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 85%',
+        toggleActions: 'play none none reverse'
+      }
     });
-
-    // Hold
-    tl.to(card, { duration: 0.3 });
-
-    // Animate out (except last)
-    if (i < cards.length - 1) {
-      tl.to(card, {
-        y: -200,
-        duration: 1,
-        opacity: 0,
-        rotationX: -135,
-        ease: "power2.in"
-      });
-    }
   });
 }
 
@@ -1103,23 +1064,6 @@ function initSectionReveal() {
       scrollTrigger: {
         trigger: footerCta,
         start: 'top 85%',
-        toggleActions: 'play none none reverse'
-      }
-    });
-  }
-
-  // Case card links — staggered slide-up on scroll
-  const caseLinks = document.querySelectorAll('.case-card-link, #case-studies-wrapper > section a');
-  if (caseLinks.length) {
-    gsap.from(caseLinks, {
-      y: 80,
-      opacity: 0,
-      duration: 1,
-      ease: 'power3.out',
-      stagger: 0.15,
-      scrollTrigger: {
-        trigger: '#case-studies-wrapper',
-        start: 'top 75%',
         toggleActions: 'play none none reverse'
       }
     });

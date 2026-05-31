@@ -564,15 +564,17 @@ body.js-cursor-ready select {
   width: 100%;
   height: auto;
   display: block;
+  transform-origin: center;
+  transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* Hover overlay effects */
 .case-card .wash {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.30);
+  background: rgba(16, 17, 19, 0.38);
   opacity: 0;
-  transition: opacity 0.22s ease;
+  transition: opacity 0.35s ease;
   z-index: 1;
 }
 
@@ -596,16 +598,16 @@ body.js-cursor-ready select {
   width: 64px;
   height: 64px;
   opacity: 0;
-  transform: translateY(-6px);
-  transition: opacity 0.22s ease, transform 0.22s ease;
+  transform: translate(-8px, -8px);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: grid;
   place-items: center;
 }
 
 .case-card .arrow-svg {
-  width: 28px;
-  height: 28px;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.35));
+  width: 32px;
+  height: 32px;
+  filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.4));
 }
 
 .case-card .case-caption {
@@ -616,13 +618,18 @@ body.js-cursor-ready select {
   font-size: 36px;
   font-weight: 500;
   opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.22s ease, transform 0.22s ease;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  transform: translateY(14px);
+  transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
   z-index: 2;
   text-decoration: underline;
-  text-decoration-thickness: 3px;
-  text-underline-offset: 6px;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 8px;
+  text-decoration-color: rgba(255, 255, 255, 0.6);
+}
+
+.case-card:hover img {
+  transform: scale(1.04);
 }
 
 .case-card:hover .wash {
@@ -631,7 +638,7 @@ body.js-cursor-ready select {
 
 .case-card:hover .arrow {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate(0, 0);
 }
 
 .case-card:hover .case-caption {
@@ -848,12 +855,12 @@ body.js-cursor-ready select {
 
 .philo-line {
   margin: 0;
-  font-size: 156px;
+  font-size: clamp(48px, 11vw, 156px);
   line-height: 1;
   font-weight: 400;
   color: #f4f6fa;
   text-transform: lowercase;
-  letter-spacing: -1px;
+  letter-spacing: -0.02em;
   transition: transform 0.45s ease;
   will-change: transform;
   word-wrap: break-word;
@@ -2533,10 +2540,6 @@ body.js-cursor-ready select {
     padding: 70px 40px;
   }
 
-  .philo-line {
-    font-size: 110px;
-  }
-
   #about {
     padding: 100px 40px;
   }
@@ -2674,11 +2677,6 @@ body.js-cursor-ready select {
   #philosophy {
     padding: 56px 24px;
     min-height: 0;
-  }
-
-  .philo-line {
-    font-size: 64px;
-    letter-spacing: 0;
   }
 
   .philo-line.align-right {
@@ -2857,10 +2855,6 @@ body.js-cursor-ready select {
 
   #case-studies-heading .case-title-heading {
     font-size: 30px;
-  }
-
-  .philo-line {
-    font-size: 48px;
   }
 
   .marquee-text {
