@@ -990,7 +990,11 @@ body.js-cursor-ready select {
   /* overflow: hidden; */
   padding: 82px 58px;
   margin: 0;
-  background: url('../assets/images/philosophy-bg.png') center / cover no-repeat;
+  background-color: #101113;
+  background-image: url('../assets/images/philosophy-bg.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   color: #f4f6fa;
   display: flex;
   justify-content: center;
