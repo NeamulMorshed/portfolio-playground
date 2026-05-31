@@ -1231,10 +1231,14 @@ body.js-cursor-ready select {
 }
 
 .btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   border: 2px solid rgba(244, 246, 250, 0.62);
   color: var(--Liight-Background, #F4F6FA);
   text-decoration: none;
-  padding: 26px 44px;
+  padding: 20px 30px;
   font-family: "Naga Space", sans-serif;
   font-size: 22px;
   font-weight: 600;
@@ -1250,7 +1254,7 @@ body.js-cursor-ready select {
   background: #f4f6fa;
   color: var(--Primary-Black, #101113);
   border-color: #f4f6fa;
-  padding: 28px 48px;
+  padding: 24px 34px;
 }
 
 .footer-bottom {
@@ -1528,6 +1532,10 @@ body.js-cursor-ready select {
 }
 
 .email-modal-submit {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   background: var(--Primary-Black, #101113);
   color: var(--Liight-Background, #F4F6FA);
   border: 2px solid var(--Primary-Black, #101113);
@@ -1540,19 +1548,18 @@ body.js-cursor-ready select {
   letter-spacing: 0;
   cursor: pointer;
   border-radius: 0;
-  transition: transform 0.24s ease;
   width: fit-content;
   align-self: flex-start;
-  transform-origin: bottom left;
   margin-top: 36px;
+  transition: padding 0.24s ease;
 }
 
 .email-modal-submit:hover {
-  transform: scale(1.08);
+  padding: 22px 26px;
 }
 
 .email-modal-submit:active {
-  transform: scale(0.98);
+  padding: 19px 23px;
 }
 
 /* Responsive adjustments */
@@ -2578,7 +2585,10 @@ body.js-cursor-ready select {
 }
 
 .next-design-btn {
-  display: inline-block;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   border: 2px solid var(--primary-black);
   padding: 22px 26px;
   font-family: "Naga Space", sans-serif;
@@ -2589,17 +2599,15 @@ body.js-cursor-ready select {
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0;
-  transition: all 0.3s ease;
   width: fit-content;
-  text-align: center;
   background: transparent;
-  transform-origin: bottom left;
+  transition: background-color 0.24s ease, color 0.24s ease, padding 0.24s ease;
 }
 
 .next-design-btn:hover {
   background: var(--primary-black);
   color: var(--Liight-Background, #F4F6FA);
-  transform: scale(1.08);
+  padding: 26px 32px;
 }
 
 /* === BACK TO TOP BUTTON === */
