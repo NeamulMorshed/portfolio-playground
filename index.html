@@ -4,8 +4,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nahid – Portfolio</title>
-  <meta name="description" content="UI/UX design portfolio – Nahid" />
+  <title>Nahid – UI/UX Designer Portfolio</title>
+  <meta name="description" content="UI/UX design portfolio – Nahid. I design intuitive experiences that solve business problems and build customer loyalty." />
+  <link rel="icon" href="/assets/logo.svg" type="image/svg+xml" />
   
   <!-- Preload critical CSS -->
   <link rel="preload" href="styles/main.css" as="style" />
@@ -191,7 +192,7 @@
         <div class="philo-lines">
           <p class="philo-line hneue">
             <span class="italic secondary">every</span>
-            <span> dots.</span>
+            <span> detail.</span>
           </p>
           <p class="philo-line hneue align-right">
             <span class="italic secondary">has to be</span>
@@ -243,11 +244,9 @@
   <div id="footer-placeholder"></div>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // Initialize back to top button
-      initBackToTop();
-      // Animate hero title
+      // Hero title flip animation
       const heroTitle = document.querySelector('#hero-title');
-      if (heroTitle) {
+      if (heroTitle && window.SplitType && window.gsap) {
         new SplitType(heroTitle, { types: "words", tagName: "span" });
         const words = heroTitle.querySelectorAll('.word');
         gsap.set(words, { transformPerspective: 1000 });
@@ -265,12 +264,12 @@
         });
       }
 
-      // Animate all other headers
+      if (!window.SplitType || !window.gsap) return;
+
+      // Animate headers
       const headers = document.querySelectorAll('h2, h3, .hneue.title, .designation-text, .case-title-heading p, .philo-line');
       headers.forEach((header) => {
-        if (header.classList.contains('case-caption')) {
-          return;
-        }
+        if (header.classList.contains('case-caption')) return;
         new SplitType(header, { types: "words", tagName: "span" });
         const words = header.querySelectorAll('.word');
         gsap.set(words, { transformPerspective: 1000 });
@@ -306,50 +305,6 @@
         });
       });
     });
-
-    // Back to Top functionality
-    function initBackToTop() {
-      const btn = document.querySelector('.backToTopBtn');
-      if (!btn) {
-        console.log('Back to top button not found');
-        return;
-      }
-
-      console.log('Back to top initialized');
-
-      // Show/hide based on scroll
-      const handleScroll = () => {
-        const scrollPos = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
-        if (scrollPos > 500) {
-          btn.classList.add('active');
-          console.log('Button should be visible');
-        } else {
-          btn.classList.remove('active');
-        }
-      };
-
-      // Smooth scroll to top
-      const scrollToTop = (e) => {
-        e.preventDefault();
-        console.log('Scrolling to top');
-        const scrollPos = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
-        const scrollStep = -scrollPos / 15;
-        const scrollInterval = setInterval(() => {
-          const currentPos = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
-          if (currentPos !== 0) {
-            window.scrollBy(0, scrollStep);
-          } else {
-            clearInterval(scrollInterval);
-          }
-        }, 15);
-      };
-
-      window.addEventListener('scroll', handleScroll, { passive: true });
-      btn.addEventListener('click', scrollToTop);
-
-      // Check initial state
-      handleScroll();
-    }
   </script>
 </body>
 

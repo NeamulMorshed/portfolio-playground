@@ -125,14 +125,17 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body.js-cursor-ready {
   cursor: none;
 }
 
-a,
-button,
-input,
-textarea,
-select {
+body.js-cursor-ready a,
+body.js-cursor-ready button,
+body.js-cursor-ready input,
+body.js-cursor-ready textarea,
+body.js-cursor-ready select {
   cursor: none;
 }
 
@@ -294,6 +297,20 @@ select {
 
 .mb-0 {
   margin-bottom: 0;
+}
+
+/* === SCROLL PROGRESS BAR === */
+#scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--black);
+  transform: scaleX(0);
+  transform-origin: left;
+  z-index: 200;
+  pointer-events: none;
 }
 
 /* === NAVIGATION === */
