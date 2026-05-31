@@ -18,8 +18,10 @@ function initLenis() {
   lenisInstance = new Lenis({
     duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smooth: true,
+    smoothWheel: true,
     smoothTouch: false,
+    touchMultiplier: 2,
+    infinite: false,
   });
 
   // Sync Lenis with GSAP ScrollTrigger

@@ -192,12 +192,33 @@
   box-sizing: border-box;
 }
 
-html,
-body {
-  height: 100%;
+html {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  /* Lenis requires height:auto on html so document height is natural */
+  height: auto;
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Lenis required classes */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 /* === IMAGE OPTIMIZATION === */
@@ -870,7 +891,7 @@ body.js-cursor-ready select {
   align-items: center;
   overflow-x: auto;
   overflow-y: hidden;
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   scroll-snap-type: x mandatory;
   padding: 0 58px;
 }
