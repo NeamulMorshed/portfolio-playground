@@ -28,11 +28,29 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js" defer></script>
+  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" defer></script>
   <script src="https://unpkg.com/split-type" defer></script>
   <script src="scripts/main.js" defer></script>
 </head>
 
 <body>
+  <!-- Preloader (only on homepage, first visit) -->
+  <div id="preloader" aria-hidden="true">
+    <div class="preloader-inner">
+      <div class="preloader-name">
+        <span class="preloader-letter">N</span>
+        <span class="preloader-letter">A</span>
+        <span class="preloader-letter">H</span>
+        <span class="preloader-letter">I</span>
+        <span class="preloader-letter">D</span>
+      </div>
+      <div class="preloader-bar"></div>
+    </div>
+  </div>
+
+  <!-- Page transition curtain (all pages) -->
+  <div id="page-curtain" aria-hidden="true"></div>
+
   <svg xmlns="http://www.w3.org/2000/svg" class="goo" version="1.1" width="100%">
     <defs>
       <filter id="goo">
