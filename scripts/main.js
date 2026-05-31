@@ -961,14 +961,86 @@ function initEmailModal() {
   }
 }
 
+// Mobile Navigation (hamburger drawer)
+function initMobileNav() {
+  const toggle = document.getElementById('nav-toggle');
+  const menu = document.getElementById('nav-menu');
+  const backdrop = document.getElementById('nav-backdrop');
+  const nav = document.getElementById('nav');
+  if (!toggle || !menu || !nav) return;
+
+  const links = Array.from(menu.querySelectorAll('.nav-link'));
+  let open = false;
+
+  function openMenu() {
+    open = true;
+    nav.classList.add('nav-open');
+    toggle.setAttribute('aria-expanded', 'true');
+    toggle.setAttribute('aria-label', 'Close menu');
+    document.body.style.overflow = 'hidden';
+
+    if (backdrop) backdrop.style.display = 'block';
+
+    if (window.gsap) {
+      gsap.set(menu, { visibility: 'visible', xPercent: 100 });
+      gsap.to(menu, { xPercent: 0, duration: 0.5, ease: 'power3.out' });
+      gsap.fromTo(links,
+        { x: 28, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.4, stagger: 0.06, delay: 0.12, ease: 'power2.out' });
+      if (backdrop) gsap.to(backdrop, { opacity: 1, duration: 0.4, onStart: () => { backdrop.style.pointerEvents = 'auto'; } });
+    } else {
+      menu.style.visibility = 'visible';
+      menu.style.transform = 'translateX(0)';
+      if (backdrop) { backdrop.style.opacity = '1'; backdrop.style.pointerEvents = 'auto'; }
+    }
+  }
+
+  function closeMenu() {
+    open = false;
+    nav.classList.remove('nav-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Open menu');
+    document.body.style.overflow = '';
+
+    if (window.gsap) {
+      gsap.to(menu, { xPercent: 100, duration: 0.4, ease: 'power3.in', onComplete: () => gsap.set(menu, { visibility: 'hidden' }) });
+      if (backdrop) gsap.to(backdrop, { opacity: 0, duration: 0.3, onComplete: () => { backdrop.style.pointerEvents = 'none'; backdrop.style.display = 'none'; } });
+    } else {
+      menu.style.transform = 'translateX(100%)';
+      menu.style.visibility = 'hidden';
+      if (backdrop) { backdrop.style.opacity = '0'; backdrop.style.pointerEvents = 'none'; backdrop.style.display = 'none'; }
+    }
+  }
+
+  toggle.addEventListener('click', () => (open ? closeMenu() : openMenu()));
+  if (backdrop) backdrop.addEventListener('click', closeMenu);
+  links.forEach((link) => link.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && open) closeMenu(); });
+
+  // Returning to desktop width: reset any inline mobile state
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+      if (open) closeMenu();
+      if (window.gsap) {
+        gsap.set(menu, { clearProps: 'transform,visibility,opacity' });
+      } else {
+        menu.style.transform = '';
+        menu.style.visibility = '';
+      }
+      if (backdrop) { backdrop.style.display = 'none'; backdrop.style.opacity = '0'; backdrop.style.pointerEvents = 'none'; }
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   // Initialize image optimizations first for faster perceived loading
   initImageOptimizations();
-  
+
   // Load navbar and footer components first
   await loadComponents();
 
   // Then initialize all other features
+  initMobileNav();
   initCursor();
   if (cursorCircles && cursorCircles.length > 0) {
     updateCursor();
