@@ -6,6 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Nahid – UI/UX Designer Portfolio</title>
   <meta name="description" content="UI/UX design portfolio – Nahid. I design intuitive experiences that solve business problems and build customer loyalty." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Nahid – UI/UX Designer Portfolio" />
+  <meta property="og:description" content="UI/UX design portfolio – Nahid. I design intuitive experiences that solve business problems and build customer loyalty." />
+  <meta property="og:url" content="https://www.nahidesign.com/" />
+  <meta property="og:image" content="https://www.nahidesign.com/assets/images/landing/selp-landing.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Nahid – UI/UX Designer Portfolio" />
+  <meta name="twitter:description" content="UI/UX design portfolio – Nahid. I design intuitive experiences that solve business problems and build customer loyalty." />
+  <meta name="twitter:image" content="https://www.nahidesign.com/assets/images/landing/selp-landing.webp" />
   <link rel="icon" href="/assets/logo.svg" type="image/svg+xml" />
   
   <!-- Preload critical CSS -->
@@ -13,20 +22,17 @@
   <link rel="stylesheet" href="styles/main.css" />
   
   <!-- Preload critical fonts -->
-  <link rel="preload" href="assets/fonts/NagaSpace Medium.otf" as="font" type="font/otf" crossorigin />
-  <link rel="preload" href="assets/fonts/NagaSpace.otf" as="font" type="font/otf" crossorigin />
-  
+  <link rel="preload" href="assets/fonts/NagaSpace-Medium.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/NagaSpace.woff2" as="font" type="font/woff2" crossorigin />
+
   <!-- Preconnect to CDNs -->
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="preconnect" href="https://unpkg.com" />
-  
-  <!-- DNS prefetch for faster resolution -->
-  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <link rel="dns-prefetch" href="https://unpkg.com" />
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js" defer></script>
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" defer></script>
   <script src="https://unpkg.com/split-type" defer></script>
@@ -98,7 +104,7 @@
       <section class="case-row case-single">
         <a href="/selp-case-study.html" class="case-card-link">
           <figure class="case-card reveal">
-            <img src="assets/Portfolio%20Design%20Assests/Landing%20Page/SELP%20MIS%20Web%20App%20-%20Landing%20Page.png"
+            <img src="assets/images/landing/selp-landing.webp"
               alt="SELP MIS Web App case study" loading="eager" decoding="async" fetchpriority="high" />
             <span class="wash" aria-hidden="true"></span>
             <div class="case-overlay" aria-hidden="true">
@@ -112,7 +118,7 @@
       <section class="case-row case-single">
         <a href="/leady-case-study.html" class="case-card-link">
           <figure class="case-card reveal">
-            <img src="assets/Portfolio%20Design%20Assests/Landing%20Page/Leady%20App%20-%20Landing%20Page.png"
+            <img src="assets/images/landing/leady-landing.webp"
               alt="Leady mobile app case study" loading="lazy" decoding="async" />
             <span class="wash" aria-hidden="true"></span>
             <div class="case-overlay" aria-hidden="true">
@@ -126,7 +132,7 @@
       <section class="case-row case-single">
         <a href="/mf-web-portal-case-study.html" class="case-card-link">
           <figure class="case-card reveal">
-            <img src="assets/Portfolio%20Design%20Assests/Landing%20Page/Centralized%20Portal%20-%20Landing%20Page.png"
+            <img src="assets/images/landing/centralized-portal-landing.webp"
               alt="Centralized Portal case study" loading="lazy" decoding="async" />
             <span class="wash" aria-hidden="true"></span>
             <div class="case-overlay" aria-hidden="true">
@@ -140,8 +146,7 @@
       <section class="case-row case-single">
         <a href="/course-management-lms.html">
           <figure class="case-card reveal">
-            <img
-              src="assets/Portfolio%20Design%20Assests/Landing%20Page/Redesigning%20the%20ONE%20LMS%20Course%20Creation%20Experience.png"
+            <img src="assets/images/landing/lms-landing.webp"
               alt="One LMS case study" loading="lazy" decoding="async" />
             <span class="wash" aria-hidden="true"></span>
             <div class="case-overlay" aria-hidden="true">
@@ -257,73 +262,8 @@
       </div>
     </section>
 
-    <!-- Footer -->
     <!-- Footer Component -->
   <div id="footer-placeholder"></div>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // Hero title flip animation
-      const heroTitle = document.querySelector('#hero-title');
-      if (heroTitle && window.SplitType && window.gsap) {
-        new SplitType(heroTitle, { types: "words", tagName: "span" });
-        const words = heroTitle.querySelectorAll('.word');
-        gsap.set(words, { transformPerspective: 1000 });
-        gsap.from(words, {
-          scrollTrigger: {
-            trigger: heroTitle,
-            start: "top 80%",
-            toggleActions: "play none none reverse"
-          },
-          rotationX: -90,
-          opacity: 0,
-          duration: 0.6,
-          ease: "power2.out",
-          stagger: { amount: 0.6 }
-        });
-      }
-
-      if (!window.SplitType || !window.gsap) return;
-
-      // Animate headers
-      const headers = document.querySelectorAll('h2, h3, .hneue.title, .designation-text, .case-title-heading p, .philo-line');
-      headers.forEach((header) => {
-        if (header.classList.contains('case-caption')) return;
-        new SplitType(header, { types: "words", tagName: "span" });
-        const words = header.querySelectorAll('.word');
-        gsap.set(words, { transformPerspective: 1000 });
-        gsap.from(words, {
-          scrollTrigger: {
-            trigger: header,
-            start: "top 80%",
-            toggleActions: "play none none reverse"
-          },
-          rotationX: -90,
-          opacity: 0,
-          duration: 0.6,
-          ease: "power2.out",
-          stagger: { amount: 0.6 }
-        });
-      });
-
-      // Animate paragraphs
-      const paragraphs = document.querySelectorAll('p:not(.case-caption):not(.case-title-heading p):not(.philo-line):not(.hneue.title):not(.designation-text)');
-      paragraphs.forEach((paragraph) => {
-        new SplitType(paragraph, { types: "words", tagName: "span" });
-        const words = paragraph.querySelectorAll('.word');
-        gsap.from(words, {
-          scrollTrigger: {
-            trigger: paragraph,
-            start: "top 80%",
-            toggleActions: "play none none reverse"
-          },
-          opacity: 0,
-          duration: 0.8,
-          ease: "sine.out",
-          stagger: 0.02
-        });
-      });
-    });
-  </script>
 </body>
 
 </html>

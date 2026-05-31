@@ -403,7 +403,7 @@ body.js-cursor-ready select {
 /* === FONTS === */
 @font-face {
   font-family: 'Naga Space';
-  src: url('../assets/fonts/NagaSpace Light.otf') format('opentype');
+  src: url('../assets/fonts/NagaSpace-Light.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -411,7 +411,7 @@ body.js-cursor-ready select {
 
 @font-face {
   font-family: 'Naga Space';
-  src: url('../assets/fonts/NagaSpace.otf') format('opentype');
+  src: url('../assets/fonts/NagaSpace.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -419,7 +419,7 @@ body.js-cursor-ready select {
 
 @font-face {
   font-family: 'Naga Space';
-  src: url('../assets/fonts/NagaSpace Italic.otf') format('opentype');
+  src: url('../assets/fonts/NagaSpace-Italic.woff2') format('woff2');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -427,7 +427,7 @@ body.js-cursor-ready select {
 
 @font-face {
   font-family: 'Naga Space';
-  src: url('../assets/fonts/NagaSpace Medium.otf') format('opentype');
+  src: url('../assets/fonts/NagaSpace-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -435,7 +435,7 @@ body.js-cursor-ready select {
 
 @font-face {
   font-family: 'Naga Space';
-  src: url('../assets/fonts/NagaSpace Semibold.otf') format('opentype');
+  src: url('../assets/fonts/NagaSpace-Semibold.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -443,7 +443,7 @@ body.js-cursor-ready select {
 
 @font-face {
   font-family: 'Naga Space';
-  src: url('../assets/fonts/NagaSpace Bold.otf') format('opentype');
+  src: url('../assets/fonts/NagaSpace-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
