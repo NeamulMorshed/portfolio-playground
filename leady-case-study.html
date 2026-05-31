@@ -611,6 +611,27 @@
       width: 100%;
       height: auto;
     }
+
+    /* === RESPONSIVE: stack title above description === */
+    @media (max-width: 768px) {
+      .meta-info {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .high-fidelity-text,
+      .high-fidelity-text.wide-gap {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .high-fidelity-title,
+      .high-fidelity-description,
+      .high-fidelity-description.fixed-width {
+        flex: unset;
+        width: 100%;
+      }
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>

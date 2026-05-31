@@ -1055,6 +1055,37 @@
       width: 100%;
       height: auto;
     }
+
+    /* === RESPONSIVE: stack title above description on narrow screens === */
+    @media (max-width: 768px) {
+      .meta-info {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .challenge-item,
+      .research-item,
+      .solution-item,
+      .solution-item-last,
+      .solution-content {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .challenge-title,
+      .challenge-description,
+      .research-title,
+      .research-description,
+      .solution-title,
+      .solution-description {
+        flex: unset;
+        width: 100%;
+      }
+
+      .solution-content {
+        gap: 16px;
+      }
+    }
   </style>
 </head>
 
