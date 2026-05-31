@@ -1148,14 +1148,16 @@ body.js-cursor-ready select {
   font-weight: 500;
   font-family: 'Naga Space', Arial, sans-serif;
   letter-spacing: 0.01em;
-  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+  transition: font-size 0.2s ease, color 0.2s ease;
+  display: inline-block;
 }
 
 .social a:hover {
+  font-size: 22px;
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
-  color: var(--grey);
+  color: var(--black);
 }
 
 /* === FOOTER === */
