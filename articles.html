@@ -5,6 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Articles – Nahid</title>
+  <meta name="description" content="Thoughts on design strategy, user psychology, and the craft of building meaningful digital experiences — by Nahid." />
+  <link rel="icon" href="/assets/logo.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="styles/main.css">
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
@@ -236,101 +238,16 @@
             </div>
             <a href="#" class="article-link">Read this in Medium</a>
           </div>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round" />
-          </svg>
-          </button>
+          <img src="assets/case-leady.png" alt="Building Design Systems" class="article-image">
+        </article>
 
-          <div class="email-modal-container">
-            <div class="email-modal-left">
-              <h2 class="email-modal-title">
-                <span class="italic">Let's build</span> something great
-              </h2>
-              <p class="email-modal-description">
-                Have a project, a new role, or just an idea you want to explore? Let's talk about it.
-              </p>
-              <div class="email-modal-decoration">
-                <img src="assets/popup%20hand.svg" alt="Hand gesture" style="width: 111px; height: 160px;">
-              </div>
-            </div>
-
-            <div class="email-modal-right">
-              <form class="email-modal-form" id="contact-form">
-                <div class="form-group">
-                  <label for="fullname" class="form-label">Full Name</label>
-                  <input type="text" id="fullname" name="fullname" class="form-input" placeholder="Type name here"
-                    required>
-                </div>
-
-                <div class="form-group">
-                  <label for="email" class="form-label">Email</label>
-                  <input type="email" id="email" name="email" class="form-input" placeholder="Type email here" required>
-                </div>
-
-                <div class="form-group">
-                  <label for="message" class="form-label">Message</label>
-                  <textarea id="message" name="message" class="form-input form-textarea"
-                    placeholder="Write your message.." required></textarea>
-                </div>
-
-                <button type="submit" class="email-modal-submit" data-block="button">
-                  <span class="button__flair"></span>
-                  <span class="button__label">SEND EMAIL</span>
-                </button>
-              </form>
-            </div>
-          </div>
       </div>
+    </section>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
   </div>
 
-  <script>
-    // Initialize email modal on page load
-    document.addEventListener('DOMContentLoaded', () => {
-      initEmailModal();
-    });
-  </script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // Animate headings
-      const headers = document.querySelectorAll('h1, h2, h3, .hneue.title');
-      headers.forEach((header) => {
-        new SplitType(header, { types: "words", tagName: "span" });
-        const words = header.querySelectorAll('.word');
-        gsap.set(words, { transformPerspective: 1000 });
-        gsap.from(words, {
-          scrollTrigger: {
-            trigger: header,
-            start: "top 80%",
-            toggleActions: "play none none reverse"
-          },
-          rotationX: -90,
-          opacity: 0,
-          duration: 0.6,
-          ease: "power2.out",
-          stagger: { amount: 0.6 }
-        });
-      });
-
-      // Animate paragraphs
-      const paragraphs = document.querySelectorAll('p:not(.hneue.title)');
-      paragraphs.forEach((paragraph) => {
-        new SplitType(paragraph, { types: "words", tagName: "span" });
-        const words = paragraph.querySelectorAll('.word');
-        gsap.from(words, {
-          scrollTrigger: {
-            trigger: paragraph,
-            start: "top 80%",
-            toggleActions: "play none none reverse"
-          },
-          opacity: 0,
-          duration: 0.8,
-          ease: "sine.out",
-          stagger: 0.02
-        });
-      });
-    });
-  </script>
 </body>
 
 </html>

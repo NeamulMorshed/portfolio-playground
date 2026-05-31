@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MF Web Portal - Case Study</title>
+  <title>MF Web Portal – Case Study | Nahid</title>
+  <meta name="description" content="Case study: designing a centralized MF web portal to unify member management, reporting, and approvals for microfinance operations." />
+  <link rel="icon" href="/assets/logo.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="styles/main.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
@@ -188,7 +190,7 @@
 
     .challenges-header-subtitle {
       display: flex;
-      padding-left: 540px;
+      padding-left: clamp(0px, calc(100% - 460px), 540px);
       justify-content: flex-end;
       align-items: center;
       gap: 10px;
@@ -262,7 +264,7 @@
 
     .solution-header-subtitle {
       display: flex;
-      padding-left: 540px;
+      padding-left: clamp(0px, calc(100% - 460px), 540px);
       justify-content: flex-end;
       align-items: center;
       gap: 10px;

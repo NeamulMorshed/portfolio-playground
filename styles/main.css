@@ -125,14 +125,17 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body.js-cursor-ready {
   cursor: none;
 }
 
-a,
-button,
-input,
-textarea,
-select {
+body.js-cursor-ready a,
+body.js-cursor-ready button,
+body.js-cursor-ready input,
+body.js-cursor-ready textarea,
+body.js-cursor-ready select {
   cursor: none;
 }
 
@@ -294,6 +297,20 @@ select {
 
 .mb-0 {
   margin-bottom: 0;
+}
+
+/* === SCROLL PROGRESS BAR === */
+#scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--black);
+  transform: scaleX(0);
+  transform-origin: left;
+  z-index: 200;
+  pointer-events: none;
 }
 
 /* === NAVIGATION === */
@@ -547,15 +564,17 @@ select {
   width: 100%;
   height: auto;
   display: block;
+  transform-origin: center;
+  transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* Hover overlay effects */
 .case-card .wash {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.30);
+  background: rgba(16, 17, 19, 0.38);
   opacity: 0;
-  transition: opacity 0.22s ease;
+  transition: opacity 0.35s ease;
   z-index: 1;
 }
 
@@ -579,16 +598,16 @@ select {
   width: 64px;
   height: 64px;
   opacity: 0;
-  transform: translateY(-6px);
-  transition: opacity 0.22s ease, transform 0.22s ease;
+  transform: translate(-8px, -8px);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: grid;
   place-items: center;
 }
 
 .case-card .arrow-svg {
-  width: 28px;
-  height: 28px;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.35));
+  width: 32px;
+  height: 32px;
+  filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.4));
 }
 
 .case-card .case-caption {
@@ -599,13 +618,18 @@ select {
   font-size: 36px;
   font-weight: 500;
   opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.22s ease, transform 0.22s ease;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  transform: translateY(14px);
+  transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
   z-index: 2;
   text-decoration: underline;
-  text-decoration-thickness: 3px;
-  text-underline-offset: 6px;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 8px;
+  text-decoration-color: rgba(255, 255, 255, 0.6);
+}
+
+.case-card:hover img {
+  transform: scale(1.04);
 }
 
 .case-card:hover .wash {
@@ -614,7 +638,7 @@ select {
 
 .case-card:hover .arrow {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate(0, 0);
 }
 
 .case-card:hover .case-caption {
@@ -831,12 +855,12 @@ select {
 
 .philo-line {
   margin: 0;
-  font-size: 156px;
+  font-size: clamp(48px, 11vw, 156px);
   line-height: 1;
   font-weight: 400;
   color: #f4f6fa;
   text-transform: lowercase;
-  letter-spacing: -1px;
+  letter-spacing: -0.02em;
   transition: transform 0.45s ease;
   will-change: transform;
   word-wrap: break-word;
@@ -1521,7 +1545,7 @@ select {
 
 .lms-problem-subtitle-wrapper {
   display: flex;
-  padding-left: 540px;
+  padding-left: clamp(0px, calc(100% - 460px), 540px);
   justify-content: flex-end;
   align-items: center;
   gap: 10px;
@@ -1673,7 +1697,7 @@ select {
 }
 
 .lms-users-section .more-text {
-  padding-left: 560px;
+  padding-left: clamp(0px, calc(100% - 460px), 560px);
   text-align: right;
 }
 
@@ -1722,7 +1746,7 @@ select {
 
 .lms-journey-section .subtitle-wrapper {
   display: flex;
-  padding-left: 540px;
+  padding-left: clamp(0px, calc(100% - 460px), 540px);
   justify-content: flex-end;
   align-items: center;
   gap: 10px;
@@ -1787,7 +1811,7 @@ select {
 
 .lms-discovery-section .subtitle-wrapper {
   display: flex;
-  padding-left: 540px;
+  padding-left: clamp(0px, calc(100% - 460px), 540px);
   justify-content: flex-end;
   align-items: center;
   gap: 10px;
@@ -1852,7 +1876,7 @@ select {
 
 .lms-ideation-section .subtitle-wrapper {
   display: flex;
-  padding-left: 540px;
+  padding-left: clamp(0px, calc(100% - 460px), 540px);
   justify-content: flex-end;
   align-items: center;
   gap: 10px;
@@ -1963,7 +1987,7 @@ select {
 
 .lms-ia-section .subtitle-wrapper {
   display: flex;
-  padding-left: 540px;
+  padding-left: clamp(0px, calc(100% - 460px), 540px);
   justify-content: flex-end;
   align-items: center;
   gap: 10px;
@@ -2024,7 +2048,7 @@ select {
 
 .lms-highfidelity-section .subtitle-wrapper-full {
   display: flex;
-  padding-left: 540px;
+  padding-left: clamp(0px, calc(100% - 460px), 540px);
   justify-content: flex-end;
   align-items: center;
   gap: 10px;
@@ -2146,7 +2170,7 @@ select {
 
 .lms-testing-subtitle-wrapper {
   display: flex;
-  padding-left: 540px;
+  padding-left: clamp(0px, calc(100% - 460px), 540px);
   justify-content: flex-end;
   align-items: center;
   gap: 10px;
@@ -2314,7 +2338,7 @@ select {
 
 .lms-learned-content {
   display: flex;
-  padding-left: 540px;
+  padding-left: clamp(0px, calc(100% - 460px), 540px);
   justify-content: flex-end;
   align-items: center;
   gap: 10px;
@@ -2431,4 +2455,413 @@ select {
 .backToTopBtn svg {
   width: 24px;
   height: 24px;
+}
+
+/* ============================================================
+   RESPONSIVE SYSTEM (V2.0)
+   Breakpoint scale:
+     Mobile        <= 480px
+     Tablet        481px – 768px
+     Large tablet  769px – 1024px
+     Desktop       1025px – 1440px
+     Wide          > 1440px
+   ============================================================ */
+
+/* --- Mobile nav: hamburger toggle (hidden on desktop) --- */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  z-index: 120;
+}
+
+.nav-toggle-line {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--black);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.nav-open .nav-toggle-line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-open .nav-toggle-line:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-open .nav-toggle-line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.nav-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 17, 19, 0.45);
+  opacity: 0;
+  z-index: 90;
+  pointer-events: none;
+}
+
+/* --- Large tablet / small desktop --- */
+@media (max-width: 1024px) {
+  .nav-inner {
+    gap: 40px;
+  }
+
+  #hero {
+    padding: 150px 40px 80px;
+  }
+
+  .hero-sub {
+    padding-left: 0;
+  }
+
+  #case-studies-heading,
+  #case-studies-wrapper {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  #case-studies-heading .case-title-heading {
+    font-size: 60px;
+  }
+
+  #philosophy {
+    padding: 70px 40px;
+  }
+
+  #about {
+    padding: 100px 40px;
+  }
+
+  .about-grid {
+    grid-template-columns: 360px 1fr;
+    gap: 48px;
+  }
+
+  .about-copy {
+    gap: 80px;
+  }
+
+  #footer {
+    padding: 36px 40px 56px;
+  }
+
+  .footer-bottom {
+    margin-left: -40px;
+    margin-right: -40px;
+  }
+
+  .marquee-text {
+    font-size: 90px;
+  }
+}
+
+/* --- Tablet & below: mobile navigation drawer + stacked layouts --- */
+@media (max-width: 768px) {
+  #nav {
+    height: 68px;
+    padding: 16px 24px;
+  }
+
+  .nav-inner {
+    gap: 20px;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  .nav-right {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    height: 100dvh;
+    width: min(82vw, 320px);
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 96px 28px 28px;
+    background: var(--light);
+    box-shadow: -20px 0 60px rgba(16, 17, 19, 0.12);
+    visibility: hidden;
+    z-index: 110;
+  }
+
+  .nav-right .nav-link {
+    width: 100%;
+    height: auto;
+    padding: 12px 0;
+    font-size: 22px;
+  }
+
+  /* Hero */
+  #hero {
+    padding: 120px 24px 60px;
+  }
+
+  #hero .container {
+    gap: 40px;
+  }
+
+  #hero .intro {
+    gap: 20px;
+  }
+
+  #hero-title {
+    font-size: clamp(48px, 13vw, 100px);
+    line-height: 1.02;
+    white-space: normal;
+  }
+
+  .designation {
+    padding: 0;
+  }
+
+  .designation-text {
+    font-size: 22px;
+  }
+
+  .hero-sub {
+    padding-left: 0;
+  }
+
+  .hero-sub p {
+    font-size: 20px;
+    max-width: 100%;
+  }
+
+  /* Case studies */
+  #case-studies-heading {
+    padding: 24px;
+  }
+
+  #case-studies-heading .case-title-heading {
+    font-size: 38px;
+  }
+
+  #case-studies-wrapper {
+    padding: 24px 24px 80px;
+    gap: 24px;
+  }
+
+  .case-card .case-overlay {
+    left: 24px;
+    right: 24px;
+    top: 32px;
+    bottom: 32px;
+  }
+
+  .case-card .case-caption {
+    font-size: 22px;
+  }
+
+  .case-card .arrow {
+    width: 44px;
+    height: 44px;
+  }
+
+  /* Philosophy */
+  #philosophy {
+    padding: 56px 24px;
+    min-height: 0;
+  }
+
+  .philo-line.align-right {
+    padding-left: 0;
+    text-align: left;
+  }
+
+  /* About */
+  #about {
+    padding: 72px 24px;
+  }
+
+  .about-inner {
+    min-height: 0;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .about-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 428 / 560;
+  }
+
+  .about-copy {
+    gap: 40px;
+  }
+
+  .about-copy .body {
+    font-size: 18px;
+  }
+
+  .social {
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+
+  .social a {
+    font-size: 17px;
+  }
+
+  /* Footer */
+  #footer {
+    padding: 32px 24px 48px;
+    gap: 48px;
+  }
+
+  .footer-top {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .footer-top .tertiary {
+    font-size: 15px;
+  }
+
+  .footer-cta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
+  }
+
+  .footer-cta .title {
+    font-size: 28px;
+  }
+
+  .footer-cta .underline {
+    font-size: 18px;
+    word-break: break-word;
+  }
+
+  .footer-bottom {
+    margin-top: 64px;
+    margin-left: -24px;
+    margin-right: -24px;
+  }
+
+  .marquee-text {
+    font-size: 56px;
+    padding-right: 36px;
+  }
+
+  /* Case study (LMS-pattern) pages */
+  .lms-hero-section {
+    padding: 110px 24px 32px;
+  }
+
+  .lms-hero-section .hero-title {
+    font-size: 32px;
+  }
+
+  .lms-hero-section .hero-container {
+    gap: 48px;
+  }
+
+  .lms-hero-section .meta-grid {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .lms-hero-section .meta-item {
+    width: 100%;
+  }
+
+  .lms-problem-section,
+  .lms-users-section,
+  .lms-journey-section,
+  .lms-discovery-section,
+  .lms-ideation-section,
+  .lms-ia-section,
+  .lms-highfidelity-section,
+  .lms-course-flow-section,
+  .lms-testing-section,
+  .lms-results-section,
+  .lms-learned-section,
+  .final-overview-section {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .lms-problem-title,
+  .lms-users-section .section-title,
+  .lms-journey-section .section-title,
+  .lms-discovery-section .section-title,
+  .lms-ideation-section .section-title,
+  .lms-ia-section .section-title,
+  .lms-highfidelity-section .section-title,
+  .lms-testing-title,
+  .lms-results-title,
+  .lms-learned-title {
+    font-size: 30px;
+  }
+
+  .lms-problem-item,
+  .lms-testing-item,
+  .lms-results-item,
+  .lms-ideation-section .keypoint-content,
+  .lms-course-flow-section .keypoint-content {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .lms-problem-item-title,
+  .lms-testing-item-title,
+  .lms-results-item-title,
+  .lms-ideation-section .keypoint-title,
+  .lms-course-flow-section .keypoint-title {
+    flex: 1 1 auto;
+  }
+
+  .lms-users-section .more-text {
+    padding-left: 0;
+  }
+
+  .lms-hero-section + .project-banner + .project-overview-section {
+    padding: 120px 24px;
+  }
+
+  .lms-hero-section + .project-banner + .project-overview-section .overview-text p {
+    font-size: 24px;
+  }
+
+  .final-overview-text {
+    font-size: 24px;
+  }
+}
+
+/* --- Small mobile --- */
+@media (max-width: 480px) {
+  #hero-title {
+    font-size: clamp(40px, 14vw, 64px);
+  }
+
+  #case-studies-heading .case-title-heading {
+    font-size: 30px;
+  }
+
+  .marquee-text {
+    font-size: 42px;
+  }
+
+  .footer-cta .underline {
+    font-size: 16px;
+  }
 }

@@ -79,27 +79,18 @@ function initImageOptimizations() {
 // Component Loading
 async function loadComponents() {
   try {
-    console.log('Starting component loading...');
-    
-    // Load navbar - use absolute path for deployment compatibility
-    console.log('Fetching navbar...');
     const navbarResponse = await fetch('/components/navbar.html');
     if (!navbarResponse.ok) {
       throw new Error(`Failed to load navbar: ${navbarResponse.status} ${navbarResponse.statusText}`);
     }
     const navbarHTML = await navbarResponse.text();
     const navbarPlaceholder = document.getElementById('navbar-placeholder');
-    console.log('Navbar placeholder found:', !!navbarPlaceholder);
     if (navbarPlaceholder) {
       navbarPlaceholder.outerHTML = navbarHTML;
       setActiveNavLink();
-      console.log('Navbar inserted successfully');
-    } else {
-      console.warn('Navbar placeholder not found in DOM');
     }
 
-    // Load footer (embedded as template to avoid CORS issues with file:// protocol)
-    console.log('Loading footer...');
+    // Footer embedded as template to avoid CORS issues with file:// protocol
     const footerHTML = `<!-- Footer -->
 <footer id="footer">
     <div class="footer-top">
@@ -187,21 +178,12 @@ async function loadComponents() {
     </div>
 </div>`;
     
-    console.log('Footer HTML loaded, length:', footerHTML.length);
     const footerPlaceholder = document.getElementById('footer-placeholder');
-    console.log('Footer placeholder found:', !!footerPlaceholder);
     if (footerPlaceholder) {
-      console.log('Inserting footer HTML...');
       footerPlaceholder.outerHTML = footerHTML;
-      console.log('Footer inserted successfully');
-      const footerCheck = document.getElementById('footer');
-      console.log('Footer element exists after insertion:', !!footerCheck);
-    } else {
-      console.warn('Footer placeholder not found in DOM');
-      console.log('Available IDs in DOM:', Array.from(document.querySelectorAll('[id]')).map(el => el.id).slice(0, 20));
     }
   } catch (error) {
-    console.error('Error loading components:', error);
+    // silently fail — components are progressive enhancement
   }
 }
 
@@ -210,7 +192,8 @@ function setActiveNavLink() {
   const navLinks = document.querySelectorAll('.nav-link');
 
   navLinks.forEach(link => {
-    const linkPage = link.getAttribute('href');
+    const linkHref = link.getAttribute('href');
+    const linkPage = linkHref.replace(/^\//, '');
     if (linkPage === currentPage) {
       link.setAttribute('aria-current', 'page');
     } else {
@@ -242,6 +225,7 @@ function initCursor() {
     cursor.append(div);
   }
   cursorCircles = Array.from(document.querySelectorAll('.cursor-circle'));
+  document.body.classList.add('js-cursor-ready');
 }
 
 function updateCursor() {
@@ -354,88 +338,41 @@ function initButtonAnimations() {
   });
 }
 
-// Initialize parallax scroll effect for case studies
+// Scroll-triggered reveal for each case study card
 function initCaseCardScrollAnimations() {
-  console.log('initCaseCardScrollAnimations called');
-  if (!window.gsap || !window.gsap.ScrollTrigger) {
-    console.log('GSAP or ScrollTrigger not available');
-    return;
-  }
+  if (!window.gsap || !window.ScrollTrigger) return;
 
-  gsap.registerPlugin(window.gsap.ScrollTrigger);
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) return;
+
+  gsap.registerPlugin(ScrollTrigger);
 
   const cards = document.querySelectorAll('.case-row.case-single');
-  console.log('Found case study cards:', cards.length);
   if (!cards.length) return;
 
-  // Make cards stack on top of each other for the animation
-  const wrapper = document.querySelector('#case-studies-wrapper');
-  if (wrapper) {
-    wrapper.style.position = 'relative';
-    wrapper.style.height = '100vh';
-  }
-
-  // Position all cards absolutely in the same spot
   cards.forEach((card) => {
-    card.style.position = 'absolute';
-    card.style.top = '50%';
-    card.style.left = '50%';
-    card.style.transform = 'translate(-50%, -50%)';
-  });
-
-  // Set initial state with perspective
-  gsap.set(cards, { transformPerspective: 1000 });
-
-  let tl = gsap.timeline({
-    ease: "none",
-    scrollTrigger: {
-      trigger: "#case-studies-wrapper",
-      pin: true,
-      scrub: 1,
-      anticipatePin: 1,
-      start: "top top",
-      end: "+=4000",
-      markers: false
-    }
-  });
-
-  console.log('ScrollTrigger timeline created');
-
-  cards.forEach((card, i) => {
-    // Animate in
-    tl.from(card, {
-      y: 200,
-      duration: 1,
+    gsap.from(card, {
+      y: 60,
       opacity: 0,
-      rotationX: -45,
-      ease: "power2.out"
+      duration: 1,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 85%',
+        toggleActions: 'play none none reverse'
+      }
     });
-
-    // Hold
-    tl.to(card, { duration: 0.3 });
-
-    // Animate out (except last)
-    if (i < cards.length - 1) {
-      tl.to(card, {
-        y: -200,
-        duration: 1,
-        opacity: 0,
-        rotationX: -135,
-        ease: "power2.in"
-      });
-    }
   });
-  console.log('Parallax animation setup complete');
 }
 
 // Animate case study heading on scroll
 function initCaseStudyHeadingAnimation() {
-  if (!window.gsap || !window.gsap.ScrollTrigger) return;
+  if (!window.gsap || !window.ScrollTrigger) return;
 
   const heading = document.querySelector('#case-studies-heading .case-title-heading');
   if (!heading) return;
 
-  gsap.registerPlugin(window.gsap.ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger);
 
   gsap.from(heading, {
     opacity: 0,
@@ -743,9 +680,7 @@ function initPhilosophyMotion() {
 }
 
 function initFooterMarquee() {
-  // Pure CSS animation - no JavaScript needed
-  // Animation runs automatically via @keyframes scroll-left
-  console.log('Footer marquee using pure CSS animation');
+  // Pure CSS animation via @keyframes scroll-left
 }
 
 function initRevealObserver(root = document) {
@@ -961,14 +896,296 @@ function initEmailModal() {
   }
 }
 
+// Mobile Navigation (hamburger drawer)
+function initMobileNav() {
+  const toggle = document.getElementById('nav-toggle');
+  const menu = document.getElementById('nav-menu');
+  const backdrop = document.getElementById('nav-backdrop');
+  const nav = document.getElementById('nav');
+  if (!toggle || !menu || !nav) return;
+
+  const links = Array.from(menu.querySelectorAll('.nav-link'));
+  let open = false;
+
+  function openMenu() {
+    open = true;
+    nav.classList.add('nav-open');
+    toggle.setAttribute('aria-expanded', 'true');
+    toggle.setAttribute('aria-label', 'Close menu');
+    document.body.style.overflow = 'hidden';
+
+    if (backdrop) backdrop.style.display = 'block';
+
+    if (window.gsap) {
+      gsap.set(menu, { visibility: 'visible', xPercent: 100 });
+      gsap.to(menu, { xPercent: 0, duration: 0.5, ease: 'power3.out' });
+      gsap.fromTo(links,
+        { x: 28, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.4, stagger: 0.06, delay: 0.12, ease: 'power2.out' });
+      if (backdrop) gsap.to(backdrop, { opacity: 1, duration: 0.4, onStart: () => { backdrop.style.pointerEvents = 'auto'; } });
+    } else {
+      menu.style.visibility = 'visible';
+      menu.style.transform = 'translateX(0)';
+      if (backdrop) { backdrop.style.opacity = '1'; backdrop.style.pointerEvents = 'auto'; }
+    }
+  }
+
+  function closeMenu() {
+    open = false;
+    nav.classList.remove('nav-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Open menu');
+    document.body.style.overflow = '';
+
+    if (window.gsap) {
+      gsap.to(menu, { xPercent: 100, duration: 0.4, ease: 'power3.in', onComplete: () => gsap.set(menu, { visibility: 'hidden' }) });
+      if (backdrop) gsap.to(backdrop, { opacity: 0, duration: 0.3, onComplete: () => { backdrop.style.pointerEvents = 'none'; backdrop.style.display = 'none'; } });
+    } else {
+      menu.style.transform = 'translateX(100%)';
+      menu.style.visibility = 'hidden';
+      if (backdrop) { backdrop.style.opacity = '0'; backdrop.style.pointerEvents = 'none'; backdrop.style.display = 'none'; }
+    }
+  }
+
+  toggle.addEventListener('click', () => (open ? closeMenu() : openMenu()));
+  if (backdrop) backdrop.addEventListener('click', closeMenu);
+  links.forEach((link) => link.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && open) closeMenu(); });
+
+  // Returning to desktop width: reset any inline mobile state
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+      if (open) closeMenu();
+      if (window.gsap) {
+        gsap.set(menu, { clearProps: 'transform,visibility,opacity' });
+      } else {
+        menu.style.transform = '';
+        menu.style.visibility = '';
+      }
+      if (backdrop) { backdrop.style.display = 'none'; backdrop.style.opacity = '0'; backdrop.style.pointerEvents = 'none'; }
+    }
+  });
+}
+
+// === FLUID SCROLL ANIMATIONS ===
+
+function initScrollProgressBar() {
+  const bar = document.getElementById('scroll-progress-bar');
+  if (!bar) return;
+
+  function update() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.transform = `scaleX(${docHeight > 0 ? scrollTop / docHeight : 0})`;
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+
+function initPageEntrance() {
+  if (!window.gsap) return;
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) return;
+
+  const nav = document.getElementById('nav');
+  const heroTitle = document.getElementById('hero-title');
+  const heroSub = document.querySelector('.hero-sub');
+  const designation = document.querySelector('.designation');
+
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+  if (nav) {
+    tl.from(nav, { y: -80, opacity: 0, duration: 0.7 }, 0);
+  }
+
+  if (heroTitle) {
+    tl.from(heroTitle, { y: 60, opacity: 0, duration: 1, ease: 'power4.out' }, 0.2);
+  }
+
+  if (designation) {
+    tl.from(designation, { y: 24, opacity: 0, duration: 0.7 }, 0.55);
+  }
+
+  if (heroSub) {
+    tl.from(heroSub, { y: 24, opacity: 0, duration: 0.7 }, 0.7);
+  }
+}
+
+function initSectionReveal() {
+  if (!window.gsap || !window.ScrollTrigger) return;
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) return;
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // About section image + text
+  const aboutImage = document.querySelector('.about-image');
+  const aboutCopy = document.querySelector('.about-copy');
+
+  if (aboutImage) {
+    gsap.from(aboutImage, {
+      x: -60,
+      opacity: 0,
+      duration: 1.2,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: aboutImage,
+        start: 'top 80%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+  }
+
+  if (aboutCopy) {
+    gsap.from(aboutCopy, {
+      x: 60,
+      opacity: 0,
+      duration: 1.2,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: aboutCopy,
+        start: 'top 80%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+  }
+
+  // Footer CTA
+  const footerCta = document.querySelector('.footer-cta');
+  if (footerCta) {
+    gsap.from(footerCta, {
+      y: 50,
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: footerCta,
+        start: 'top 85%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+  }
+
+  // Social links pop-in
+  const socialLinks = document.querySelectorAll('.social li');
+  if (socialLinks.length) {
+    gsap.from(socialLinks, {
+      y: 20,
+      opacity: 0,
+      duration: 0.5,
+      ease: 'back.out(1.4)',
+      stagger: 0.08,
+      scrollTrigger: {
+        trigger: '.social',
+        start: 'top 85%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+  }
+
+  // Case study section blocks — slide up on scroll
+  const sectionBlocks = document.querySelectorAll('.section-block, .solutions-section, .progressive-disclosure-section, .predictable-experience-section, .conclusion-section');
+  sectionBlocks.forEach((block) => {
+    gsap.from(block, {
+      y: 40,
+      opacity: 0,
+      duration: 0.9,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: block,
+        start: 'top 82%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+  });
+
+  // Solution images — subtle scale in
+  const solutionImages = document.querySelectorAll('.solution-item-image, .research-image, .design-process-image');
+  solutionImages.forEach((img) => {
+    gsap.from(img, {
+      scale: 0.95,
+      opacity: 0,
+      duration: 1,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: img,
+        start: 'top 85%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+  });
+
+  // Vision/challenge cards — staggered reveal
+  const cards = document.querySelectorAll('.card, .persona-card, .lms-problem-item');
+  if (cards.length) {
+    cards.forEach((card, i) => {
+      gsap.from(card, {
+        y: 30,
+        opacity: 0,
+        duration: 0.6,
+        ease: 'power2.out',
+        delay: (i % 4) * 0.08,
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 85%',
+          toggleActions: 'play none none reverse'
+        }
+      });
+    });
+  }
+}
+
+function initHorizontalMarqueeHover() {
+  const marquee = document.querySelector('.footer-marquee');
+  if (!marquee) return;
+
+  const content = marquee.querySelector('.marquee-content');
+  if (!content) return;
+
+  marquee.addEventListener('mouseenter', () => {
+    content.style.animationPlayState = 'paused';
+  });
+
+  marquee.addEventListener('mouseleave', () => {
+    content.style.animationPlayState = 'running';
+  });
+}
+
+function initSmoothScrollLinks() {
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', (e) => {
+      const targetId = anchor.getAttribute('href').slice(1);
+      if (!targetId) return;
+      const target = document.getElementById(targetId);
+      if (!target) return;
+
+      e.preventDefault();
+      const top = target.getBoundingClientRect().top + window.scrollY - 80;
+
+      if (window.gsap && window.ScrollToPlugin) {
+        gsap.to(window, { duration: 1, scrollTo: top, ease: 'power3.inOut' });
+      } else {
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
-  // Initialize image optimizations first for faster perceived loading
   initImageOptimizations();
-  
-  // Load navbar and footer components first
+
   await loadComponents();
 
-  // Then initialize all other features
+  // Register GSAP plugins if available
+  if (window.gsap) {
+    if (window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+    if (window.ScrollToPlugin) gsap.registerPlugin(ScrollToPlugin);
+  }
+
+  initMobileNav();
   initCursor();
   if (cursorCircles && cursorCircles.length > 0) {
     updateCursor();
@@ -983,6 +1200,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   initCaseStudyPage();
   initEmailModal();
   initBackToTop();
+
+  // Fluid scroll animations
+  initScrollProgressBar();
+  initPageEntrance();
+  initSectionReveal();
+  initHorizontalMarqueeHover();
+  initSmoothScrollLinks();
 });
 
 document.addEventListener('mousemove', onMouseMove, false);
