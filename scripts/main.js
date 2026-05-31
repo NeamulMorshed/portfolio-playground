@@ -6,6 +6,38 @@ const COLORS = {
   bgBlack: '#212225'
 };
 
+// === LENIS SMOOTH SCROLL ===
+let lenisInstance = null;
+
+function initLenis() {
+  if (typeof Lenis === 'undefined') return;
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) return;
+
+  lenisInstance = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smooth: true,
+    smoothTouch: false,
+  });
+
+  // Sync Lenis with GSAP ScrollTrigger
+  if (window.gsap && window.ScrollTrigger) {
+    lenisInstance.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => {
+      lenisInstance.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
+  } else {
+    function raf(time) {
+      lenisInstance.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+  }
+}
+
 // === IMAGE OPTIMIZATION ===
 function initImageOptimizations() {
   const images = document.querySelectorAll('img');
@@ -1185,6 +1217,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (window.ScrollToPlugin) gsap.registerPlugin(ScrollToPlugin);
   }
 
+  // Lenis must come before anything that uses scroll
+  initLenis();
+
   initMobileNav();
   initCursor();
   if (cursorCircles && cursorCircles.length > 0) {
@@ -1207,6 +1242,287 @@ document.addEventListener('DOMContentLoaded', async () => {
   initSectionReveal();
   initHorizontalMarqueeHover();
   initSmoothScrollLinks();
+
+  // Advanced interaction layer
+  initPageTransitions();
+  initCursorContextual();
+  initPreloader();
+  initGrainTexture();
+  initPhilosophyCharAnimation();
+  initMagneticCards();
+  initAboutReveal();
 });
 
 document.addEventListener('mousemove', onMouseMove, false);
+
+// === PAGE TRANSITIONS ===
+function initPageTransitions() {
+  const curtain = document.getElementById('page-curtain');
+  if (!curtain || !window.gsap) return;
+
+  // Reveal: curtain exits on page load
+  gsap.set(curtain, { scaleX: 1, transformOrigin: 'right center' });
+  gsap.to(curtain, {
+    scaleX: 0,
+    duration: 0.9,
+    ease: 'power3.inOut',
+    delay: 0.05,
+    onComplete: () => { curtain.style.pointerEvents = 'none'; }
+  });
+
+  // Intercept internal link clicks
+  document.querySelectorAll('a[href]').forEach((link) => {
+    const href = link.getAttribute('href');
+    // Skip anchors, external, mailto, empty
+    if (!href || href.startsWith('#') || href.startsWith('mailto') ||
+        href.startsWith('http') || href.startsWith('//')) return;
+
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      curtain.style.pointerEvents = 'all';
+      gsap.set(curtain, { scaleX: 0, transformOrigin: 'left center' });
+      gsap.to(curtain, {
+        scaleX: 1,
+        duration: 0.7,
+        ease: 'power3.inOut',
+        onComplete: () => { window.location.href = href; }
+      });
+    });
+  });
+}
+
+// === CURSOR CONTEXTUAL STATES ===
+function initCursorContextual() {
+  const cursorEl = document.getElementById('cursor');
+  if (!cursorEl) return;
+
+  const label = document.createElement('span');
+  label.className = 'cursor-label';
+  cursorEl.appendChild(label);
+
+  function setCursorState(state, text = '') {
+    cursorEl.dataset.cursorState = state;
+    label.textContent = text;
+  }
+
+  // Case study cards → "VIEW"
+  document.querySelectorAll('.case-card-link, .case-card').forEach((el) => {
+    el.addEventListener('mouseenter', () => setCursorState('view', 'VIEW'));
+    el.addEventListener('mouseleave', () => setCursorState(''));
+  });
+
+  // Email button → pulse ring state
+  document.addEventListener('mouseenter', (e) => {
+    const btn = e.target.closest('#email-btn, .email-modal-submit');
+    if (btn) setCursorState('cta');
+  }, true);
+  document.addEventListener('mouseleave', (e) => {
+    const btn = e.target.closest('#email-btn, .email-modal-submit');
+    if (btn) setCursorState('');
+  }, true);
+
+  // Portrait image → soft state
+  document.querySelectorAll('.about-image img').forEach((el) => {
+    el.addEventListener('mouseenter', () => setCursorState('soft'));
+    el.addEventListener('mouseleave', () => setCursorState(''));
+  });
+
+  // Text/paragraphs → thin state
+  document.querySelectorAll('p, h1, h2, h3, li').forEach((el) => {
+    el.addEventListener('mouseenter', () => setCursorState('text'));
+    el.addEventListener('mouseleave', () => setCursorState(''));
+  });
+
+  // Nav links
+  document.querySelectorAll('.nav-link, .back-link').forEach((el) => {
+    el.addEventListener('mouseenter', () => setCursorState('link'));
+    el.addEventListener('mouseleave', () => setCursorState(''));
+  });
+}
+
+// === PRELOADER ===
+function initPreloader() {
+  const preloader = document.getElementById('preloader');
+  if (!preloader || !window.gsap) return;
+
+  const letters = preloader.querySelectorAll('.preloader-letter');
+  const bar = preloader.querySelector('.preloader-bar');
+
+  // Already animated out (subsequent page visits via transition)
+  if (sessionStorage.getItem('nahid-visited')) {
+    gsap.set(preloader, { display: 'none' });
+    return;
+  }
+
+  document.body.style.overflow = 'hidden';
+
+  const tl = gsap.timeline({
+    onComplete: () => {
+      sessionStorage.setItem('nahid-visited', '1');
+      document.body.style.overflow = '';
+    }
+  });
+
+  // Letters build in staggered
+  tl.from(letters, {
+    y: 80,
+    opacity: 0,
+    duration: 0.6,
+    ease: 'power3.out',
+    stagger: 0.06,
+  });
+
+  // Bar fills
+  if (bar) {
+    tl.from(bar, { scaleX: 0, transformOrigin: 'left', duration: 0.7, ease: 'power2.inOut' }, '-=0.1');
+    tl.to(bar, { scaleX: 1, duration: 0 }, '>');
+  }
+
+  // Hold a beat
+  tl.to({}, { duration: 0.3 });
+
+  // Wipe preloader up
+  tl.to(preloader, {
+    yPercent: -100,
+    duration: 0.85,
+    ease: 'power3.inOut',
+    onComplete: () => { preloader.style.display = 'none'; }
+  });
+}
+
+// === GRAIN TEXTURE ===
+function initGrainTexture() {
+  if (document.getElementById('grain-overlay')) return;
+
+  const grain = document.createElement('div');
+  grain.id = 'grain-overlay';
+  grain.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(grain);
+}
+
+// === PHILOSOPHY CHARACTER ANIMATION ===
+function initPhilosophyCharAnimation() {
+  if (!window.gsap || !window.ScrollTrigger || !window.SplitType) return;
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) return;
+
+  const lines = document.querySelectorAll('.philo-line');
+  if (!lines.length) return;
+
+  lines.forEach((line) => {
+    // Don't re-split if SplitType already ran on this element
+    const split = new SplitType(line, { types: 'chars', tagName: 'span' });
+    const chars = split.chars;
+
+    gsap.set(chars, { yPercent: 110, opacity: 0 });
+
+    gsap.to(chars, {
+      yPercent: 0,
+      opacity: 1,
+      duration: 0.7,
+      ease: 'power3.out',
+      stagger: 0.025,
+      scrollTrigger: {
+        trigger: line,
+        start: 'top 82%',
+        toggleActions: 'play none none reverse',
+      }
+    });
+  });
+
+  // Velocity blur on fast scroll
+  let lastScrollY = window.scrollY;
+  let velocityBlurId = null;
+
+  window.addEventListener('scroll', () => {
+    const velocity = Math.abs(window.scrollY - lastScrollY);
+    lastScrollY = window.scrollY;
+
+    const blur = Math.min(velocity * 0.18, 6);
+    lines.forEach((line) => {
+      line.style.filter = blur > 0.5 ? `blur(${blur}px)` : '';
+    });
+
+    clearTimeout(velocityBlurId);
+    velocityBlurId = setTimeout(() => {
+      lines.forEach((line) => { line.style.filter = ''; });
+    }, 120);
+  }, { passive: true });
+}
+
+// === MAGNETIC CARDS ===
+function initMagneticCards() {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion || !window.gsap) return;
+
+  document.querySelectorAll('.case-card').forEach((card) => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const xRel = (e.clientX - rect.left - rect.width / 2) / rect.width;
+      const yRel = (e.clientY - rect.top - rect.height / 2) / rect.height;
+
+      gsap.to(card, {
+        x: xRel * 12,
+        y: yRel * 8,
+        rotateX: -yRel * 3,
+        rotateY: xRel * 3,
+        duration: 0.5,
+        ease: 'power2.out',
+        transformPerspective: 800,
+      });
+    });
+
+    card.addEventListener('mouseleave', () => {
+      gsap.to(card, {
+        x: 0, y: 0, rotateX: 0, rotateY: 0,
+        duration: 0.7,
+        ease: 'elastic.out(1, 0.5)',
+      });
+    });
+  });
+
+  // Magnetic EMAIL ME button
+  document.querySelectorAll('#email-btn').forEach((btn) => {
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const xRel = (e.clientX - rect.left - rect.width / 2) / rect.width;
+      const yRel = (e.clientY - rect.top - rect.height / 2) / rect.height;
+      gsap.to(btn, { x: xRel * 10, y: yRel * 6, duration: 0.3, ease: 'power2.out' });
+    });
+    btn.addEventListener('mouseleave', () => {
+      gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
+    });
+  });
+}
+
+// === ABOUT PORTRAIT WIPE REVEAL ===
+function initAboutReveal() {
+  if (!window.gsap || !window.ScrollTrigger) return;
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) return;
+
+  const figure = document.querySelector('.about-image');
+  if (!figure) return;
+
+  // Insert wipe overlay
+  const wipe = document.createElement('div');
+  wipe.className = 'about-wipe';
+  figure.style.position = 'relative';
+  figure.style.overflow = 'hidden';
+  figure.appendChild(wipe);
+
+  gsap.set(wipe, { scaleX: 1, transformOrigin: 'left center' });
+
+  gsap.to(wipe, {
+    scaleX: 0,
+    duration: 1.1,
+    ease: 'power3.inOut',
+    scrollTrigger: {
+      trigger: figure,
+      start: 'top 75%',
+      toggleActions: 'play none none none',
+    }
+  });
+}
