@@ -117,7 +117,7 @@
     }
 
     .article-hero-title {
-      font-size: 112px;
+      font-size: clamp(48px, 8.5vw, 112px);
       font-weight: 400;
       color: var(--black);
       margin: 0;
@@ -153,6 +153,26 @@
       display: flex;
       flex-direction: column;
       gap: 26px;
+    }
+
+    @media (max-width: 1280px) {
+      .article-image {
+        width: 400px;
+        height: 240px;
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .article-card {
+        gap: 28px;
+      }
+      .article-image {
+        width: 300px;
+        height: 200px;
+      }
+      .article-content {
+        gap: 60px;
+      }
     }
   </style>
 </head>

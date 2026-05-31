@@ -45,7 +45,7 @@
     }
 
     .ui-hero-title h1 {
-      font-size: 112px;
+      font-size: clamp(48px, 8.5vw, 112px);
       line-height: 1.14;
       margin: 0;
       font-weight: 400;
@@ -118,9 +118,28 @@
 
     .ui-project-image {
       width: 100%;
-      height: 300px;
+      height: clamp(200px, 22vw, 300px);
       object-fit: cover;
       border-radius: 1px;
+    }
+
+    @media (max-width: 1280px) {
+      .ui-exploration-hero {
+        padding-top: 160px;
+      }
+      .ui-hero-subtitle {
+        text-align: left;
+        margin-left: 0;
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .ui-grid-row {
+        gap: 24px;
+      }
+      .ui-grid-container {
+        gap: 24px;
+      }
     }
 
     .ui-project-title {
