@@ -3061,3 +3061,72 @@ body.js-cursor-ready select {
     font-size: 16px;
   }
 }
+
+/* --- 320px safety net (iPhone SE 1st gen, Galaxy A series) --- */
+@media (max-width: 320px) {
+  #hero {
+    padding: 110px 16px 48px;
+  }
+
+  #case-studies-heading {
+    padding: 20px 16px;
+  }
+
+  #case-studies-wrapper {
+    padding: 16px 16px 60px;
+    gap: 16px;
+  }
+
+  #case-studies-heading .case-title-heading {
+    font-size: 26px;
+  }
+
+  #philosophy {
+    padding: 48px 16px;
+  }
+
+  #about {
+    padding: 56px 16px;
+  }
+
+  #footer {
+    padding: 28px 16px 40px;
+  }
+
+  .footer-bottom {
+    margin-left: -16px;
+    margin-right: -16px;
+  }
+
+  .footer-cta .title {
+    font-size: 24px;
+  }
+
+  .footer-cta .underline {
+    font-size: 14px;
+  }
+
+  .marquee-text {
+    font-size: 34px;
+  }
+
+  .lms-hero-section {
+    padding: 100px 16px 28px;
+  }
+
+  .lms-problem-section,
+  .lms-users-section,
+  .lms-journey-section,
+  .lms-discovery-section,
+  .lms-ideation-section,
+  .lms-ia-section,
+  .lms-highfidelity-section,
+  .lms-course-flow-section,
+  .lms-testing-section,
+  .lms-results-section,
+  .lms-learned-section,
+  .final-overview-section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}

@@ -90,6 +90,40 @@
       }
     }
 
+    @media (max-width: 768px) {
+      .photo-hero {
+        padding-top: 120px;
+        padding-bottom: 32px;
+      }
+      .photo-hero-container {
+        gap: 32px;
+      }
+      .photo-hero-subtitle {
+        font-size: 18px;
+      }
+      .photos-section {
+        padding: 40px 24px;
+      }
+      .photo-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        grid-auto-rows: clamp(160px, 28vw, 240px);
+      }
+      .photo-item:nth-child(3),
+      .photo-item:nth-child(7),
+      .photo-item:nth-child(9) {
+        grid-row: span 1;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .photo-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        grid-auto-rows: 220px;
+      }
+    }
+
     .photo-item {
       background: white;
       overflow: hidden;
